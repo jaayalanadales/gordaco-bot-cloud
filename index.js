@@ -7,7 +7,7 @@ dotenv.config()
 
 import express from 'express'
 const app = express()
-const port = 49279;
+const port = 8080;
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
