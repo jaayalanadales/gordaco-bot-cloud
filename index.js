@@ -1,48 +1,79 @@
-// Copyright 2021 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+import telegramBot from "node-telegram-bot-api"
+import dotenv from "dotenv"
+// import fs from "fs"
+// import util from "util"
 
-import app from './app.js';
-import {logger, initLogCorrelation} from './utils/logging.js';
-import {fetchProjectId} from './utils/metadata.js';
+dotenv.config()
 
-/**
- * Initialize app and start Express server
- */
-const main = async () => {
-  let project = process.env.GOOGLE_CLOUD_PROJECT;
-  if (!project) {
-    try {
-      project = await fetchProjectId();
-    } catch (err) {
-      logger.warn('Could not fetch Project Id for tracing.');
-    }
-  }
-  // Initialize request-based logger with project Id
-  initLogCorrelation(project);
+import express from 'express'
+const app = express()
+const port = 8080;
 
-  // Start server listening on PORT env var
-  const PORT = process.env.PORT || 8080;
-  app.listen(PORT, () => logger.info(`Listening on port ${PORT}`));
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+})
+
+
+// const logFile = fs.createWriteStream("log.txt", { flags: "a" })
+// const logStdout = process.stdout
+
+// console.log = function () {
+//   logFile.write(util.format.apply(null, arguments) + "\n")
+//   logStdout.write(util.format.apply(null, arguments) + "\n")
+// }
+
+// Reemplaza 'YOUR_TELEGRAM_BOT_TOKEN' con el token que te dio el BotFather
+const token = '7300706486:AAERPAOM7q3z49ZBaU-ZZ4M2Dug8ofURbQI';
+
+// Crea una instancia del bot
+const bot = new telegramBot(token, { polling: true });
+
+// Lista de pruebas
+const challengesMessage = `¡Hola! Aquí tienes la lista de pruebas:
+1. Lentejas
+2. Puzzle
+3. Quizz
+4. Quizz musical`;
+
+// Pistas para cada prueba
+const hints = {
+  1: 'Dentro del bote hay un kilo de lentejas, debéis encontrar las 3 lentejas numeradas y sumar los números para obtener el primer número de la combinación.',
+  2: 'Tenéis que completar el puzzle y una vez completado hay un código escondido en él. La solución de ese código es el segundo número.',
+  3: 'Debéis de completar todas las preguntas que haga el bot para que os de el tercer número.',
+  4: 'Debéis adivinar todos los openings de anime para obtener el cuarto número.'
 };
 
-/**
- * Listen for termination signal
- */
-process.on('SIGTERM', () => {
-  // Clean up resources on shutdown
-  logger.info('Caught SIGTERM.');
-  logger.flush();
+// Función para responder con la lista de pruebas
+const sendChallenges = (chatId) => {
+  bot.sendMessage(chatId, challengesMessage);
+};
+
+// Función para responder con la pista correspondiente
+const sendHint = (chatId, number) => {
+  const hint = hints[number];
+  if (hint) {
+    bot.sendMessage(chatId, hint).then(() => {
+      // Después de enviar la pista, vuelve a enviar la lista de pruebas
+      sendChallenges(chatId);
+    });
+  } else {
+    bot.sendMessage(chatId, 'Número inválido. Por favor, elige un número del 1 al 4.');
+  }
+};
+
+// Manejar cualquier mensaje recibido
+bot.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  const text = msg.text;
+
+  // Verificar si el mensaje es un número del 1 al 4
+  const number = parseInt(text);
+  if (!isNaN(number) && number >= 1 && number <= 4) {
+    sendHint(chatId, number);
+  } else {
+    // Si no es un número válido, enviar la lista de pruebas
+    sendChallenges(chatId);
+  }
 });
 
-main();
+console.log('El bot está en funcionamiento');
