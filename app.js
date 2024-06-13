@@ -1,4 +1,4 @@
-const TelegramBot = require('node-telegram-bot-api');
+const TelegramBot = require('node-telegram-bot-api');   
 
 // Reemplaza 'YOUR_TELEGRAM_BOT_TOKEN' con el token que te dio el BotFather
 const token = '7300706486:AAERPAOM7q3z49ZBaU-ZZ4M2Dug8ofURbQI';
@@ -20,6 +20,14 @@ const hints = {
   3: 'Debéis de completar todas las preguntas que haga el bot para que os de el tercer número.',
   4: 'Debéis adivinar todos los openings de anime para obtener el cuarto número.'
 };
+
+import express from 'express'
+const app = express()
+const port = 8080
+
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+})
 
 // Función para responder con la lista de pruebas
 const sendChallenges = (chatId) => {
