@@ -28,14 +28,9 @@ const token = '7300706486:AAERPAOM7q3z49ZBaU-ZZ4M2Dug8ofURbQI';
 // Crea una instancia del bot
 const bot = new telegramBot(token, { polling: true });
 
-const introMessage = `¡Hola! Soy El Gordaco. Hace tiempo tenía un escape room en Córdoba, 
-pero no me fue muy bien, que digamos... Así que ahora me he metido en el mundo de los escapes virtuales. 
-Espero que me vaya mejor aquí. Seré vuestro GM en este escape. ¡Espero que tengáis ganas de empezar!
-El escape consta de 4 pruebas: 2 físicas y 2 virtuales. Al terminar todas las pruebas, deberíais tener 
-una combinación de 6 números en el mismo orden que las pruebas. Con esos 6 números podéis abrir el candado 
-para obtener la llave que abre la caja de los sobres. A continuación os muestro la lista de pruebas. 
-Podéis hacerlas en el orden que queráis, pero recomiendo hacerlas de la 1 a la 4 para evitar spoilers 
-y porque cada una es mejor que la anterior.`;
+const introMessage = `¡Hola! Soy El Gordaco. Hace tiempo tenía un escape room en Córdoba, pero no me fue muy bien, que digamos... Así que ahora me he metido en el mundo de los escapes virtuales. Espero que me vaya mejor aquí. Seré vuestro GM en este escape. ¡Espero que tengáis ganas de empezar!
+El escape consta de 4 pruebas: 2 físicas y 2 virtuales. Tras completar cada prueba obtendréis un número, al unir todos los números de las pruebas en orden saldrá otro número de 6 cifras. Ejemplo simplificado: si la prueba 1 da el número 23 y la prueba 2 da el número 85 el número que buscáis es el 2385. Con esas 6 cifras podéis abrir el candado para obtener la llave que abre la caja de los sobres.
+A continuación os muestro la lista de pruebas. Podéis hacerlas en el orden que queráis, pero recomiendo hacerlas de la 1 a la 4 para evitar spoilers y porque cada una es mejor que la anterior.`;
 
 // Lista de pruebas
 const challengesMessage = `Escribe en el chat el número correspondiente a cada prueba para saber de ella:
@@ -46,7 +41,7 @@ const challengesMessage = `Escribe en el chat el número correspondiente a cada 
 
 // Pistas para cada prueba
 const hints = {
-  1: 'Dentro del bote hay un kilo de lentejas, debéis encontrar las 3 lentejas numeradas y sumar los números para obtener el primer número de la combinación.',
+  1: 'Dentro del bote hay un kilo de lentejas, debéis encontrar las 3 lentejas numeradas (solo por una cara) y sumar los números para obtener el primer número de la combinación. No perdáis ninguna lenteja y preparad un delicioso plato cuando terminéis de revisarlas.',
   2: 'Tenéis que completar el puzzle y una vez completado hay un código escondido en él. La solución de ese código es el segundo número.',
   3: 'Debéis de contactar a mi compañero, El Señor Numérico, de la misma forma que me habéis contactado a mí. Su usuario es @AyN_quiz_bot',
   4: 'Os dejaré el siguiente link por aquí: https://openings-anime-quiz-git-master-franmicars-projects.vercel.app/ una vez dentro ya sabréis qué hacer.'
@@ -78,7 +73,7 @@ bot.onText(/\/start/, (msg) => {
   bot.sendMessage(chatId, introMessage);
   
   // Mensaje con las reglas
-  sendRules(chatId);
+  sendChallenges(chatId);
 });
 
 // Manejar cualquier mensaje recibido
