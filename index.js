@@ -48,7 +48,7 @@ const hints = {
   1: 'Dentro del bote hay un kilo de lentejas, debéis encontrar las 3 lentejas numeradas (solo por una cara) y sumar los números para obtener el primer número de la combinación. No perdáis ninguna lenteja y preparad un delicioso plato cuando terminéis de revisarlas.',
   2: 'Tenéis que completar el puzzle y una vez completado hay un código escondido en él. La solución de ese código es el segundo número.',
   3: 'Debéis de contactar a mi compañero, El Señor Numérico, de la misma forma que me habéis contactado a mí. Su usuario es @AyN_quiz_bot',
-  4: 'Os dejaré el siguiente link por aquí: https://openings-anime-quiz-git-master-franmicars-projects.vercel.app/ una vez dentro ya sabréis qué hacer.'
+  4: 'Os dejaré el siguiente link por aquí: https://openings-anime-quiz.vercel.app/ una vez dentro ya sabréis qué hacer.'
 };
 
 // Función para responder con la lista de pruebas
